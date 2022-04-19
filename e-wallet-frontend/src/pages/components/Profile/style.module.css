@@ -1,0 +1,74 @@
+.header {
+    background-color: gainsboro;
+}
+
+.riskProfile {
+    height: 10px;
+    width: 300px;
+    background-color: grey;
+}
+
+.riskProfileAvailableLevel0 {
+    height: 10px;
+    width: 0%;
+    background-image: linear-gradient(90deg, rgba(34,141,195,1) 0%, rgba(45,253,134,1) 100%);
+}
+
+.riskProfileAvailableLevel1 {
+    height: 10px;
+    width: 25%;
+    background-image: linear-gradient(90deg, rgba(34,141,195,1) 0%, rgba(45,253,134,1) 100%);
+}
+
+.riskProfileAvailableLevel2 {
+    height: 10px;
+    width: 50%;
+    background-image: linear-gradient(90deg, rgba(34,141,195,1) 0%, rgba(45,253,134,1) 100%);
+}
+
+.riskProfileAvailableLevel3 {
+    height: 10px;
+    width: 75%;
+    background-image: linear-gradient(90deg, rgba(34,141,195,1) 0%, rgba(45,253,134,1) 100%);
+}
+
+.riskProfileAvailableLevel4 {
+    height: 10px;
+    width: 100%;
+    background-image: linear-gradient(90deg, rgba(34,141,195,1) 0%, rgba(45,253,134,1) 100%);
+}
+
+.body {
+    background-color: grey;
+}
+
+.topBlock {
+    background-color: aquamarine;
+}
+
+.avatar {
+    margin-left: 75px !important;
+    width: 50% !important;
+    border-radius: 50%;
+}
+
+.centerBlock {
+    background-color: white;
+}
+
+.bottomBlock {
+    background-color: white;
+}
+
+.firstBlock {
+    background-color: white;
+}
+
+.accountDetails {
+    width: auto;
+}
+
+.secondBlock {
+    background-color: white;
+}
+
