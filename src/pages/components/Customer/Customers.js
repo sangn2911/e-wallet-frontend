@@ -1,7 +1,7 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Button, Table, Modal, Form, Col, Row } from 'react-bootstrap';
-import styles from './style.module.scss'
+
 
 function Customers() {
 
@@ -13,12 +13,20 @@ function Customers() {
     const [customers, setCustomers] = React.useState([]);
 
     React.useEffect(() => {
-        fetch('http://localhost:8082/api/customer')
-            .then(res => res.json())
-            .then(customers => {
-                setCustomers(customers)
-            })
+        fetch('http://localhost:8082/api/customer', {
+            method: 'GET',
+            headers: {
+                'Accept': '*/*',
+                'Content-Type': 'application/json',
+            },
+        }).then(res => res.json()
+        ).then(data => {
+            setCustomers(data.data)
+        }).catch(e => {
+            console.log(e)
+        })
     }, [])
+
 
     const [lastName, setLastName] = React.useState('');
     const [firstName, setFirstName] = React.useState('');
@@ -28,7 +36,6 @@ function Customers() {
     const [address, setAddress] = React.useState('');
 
     const handleAdd = () => {
-
         fetch('http://localhost:8082/api/customer', {
             method: 'POST',
             headers: {
@@ -46,7 +53,7 @@ function Customers() {
         })
             .then(res => res.json())
             .then(data => {
-                customers.push(data);
+                customers.push(data.data);
                 setCustomers(customers);
                 setShow(false)
             })
@@ -100,7 +107,12 @@ function Customers() {
                             <td>{customer.nationality}</td>
                             <td>{customer.address}</td>
                             <td>{<a href={"/customers/profile/" + customer.id}>Open</a>}</td>
-                            <td>{<button onClick={e => handleDel(customer.id)}>x</button>}</td>
+                            <td>
+                                <Button
+                                    style={{ backgroundColor: 'red', border: 'none', color: 'white' }}
+                                    onClick={e => handleDel(customer.id)}>Delete
+                                </Button>
+                            </td>
                         </tr>
                     ))}
 

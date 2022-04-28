@@ -7,9 +7,10 @@ import Home from './pages/components/Home/Home';
 import Profile from './pages/components/Profile/Profile';
 import Transactions from './pages/components/Transactions/Transactions';
 import Affiliates from './pages/components/Affiliates/Affiliates';
-import Form from './pages/components/AuthenForm/Form';
-import Login from './pages/components/AuthenForm/Login'
+// import Form from './pages/components/AuthenForm/Form';
 import './App.css';
+import Login from './pages/components/AuthenForm/Login';
+import Signup from './pages/components/AuthenForm/Signup';
 
 function App() {
 
@@ -48,115 +49,28 @@ function App() {
                     userToken: null,
                     isLoading: false,
                 }
+            default:
+                return 
         }
     }
 
     const [state, dispatch] = React.useReducer(reducer, initState);
 
-    const authContext = React.useMemo(() => ({
-        // signIn: async (username, phoneNumber, password) => {
-        //     let userToken = null;
-        //     if (username !== null && phoneNumber !== null && password !== null) {
-        //         try {
-        //             await fetch('http://192.168.1.2:8082/api/user/login', {
-        //                 method: 'POST',
-        //                 headers: {
-        //                     'Accept': '*/*',
-        //                     'Content-Type': 'application/json',
-        //                 },
-        //                 body: JSON.stringify({
-        //                     username: username,
-        //                     phoneNumber: phoneNumber,
-        //                     password: password
-        //                 })
-        //             })
-        //                 .then(res => res.text())
-        //                 .then(data => {
-        //                     console.log(data)
-        //                     if (data !== "Tài khoản hoặc số điện thoại hoặc mật khẩu không chính xác") {
-        //                         userToken = data;
-        //                         localStorage.setItem('userToken', data)
-        //                     }
-
-        //                     // fetch('http://192.168.1.2:8082/hello', {
-        //                     //     method: 'GET',
-        //                     //     headers: {
-        //                     //         'Authorization': `Token ${data}`
-        //                     //     }
-        //                     // })
-        //                     //     .then(res => res.text())
-        //                     //     .then(message => {
-        //                     //         console.log(message)
-        //                     //     })
-        //                     //     .catch(error => console.log(error))
-        //                 })
-        //                 .catch(error => console.log(error));
-        //         } catch (e) {
-        //             console.log(e)
-        //         }
-        //         dispatch({ type: 'LOGIN', id: username, token: userToken })
-        //     }
-        // },
-        // signOut: async () => {
-        //     try {
-        //         await localStorage.removeItem('userToken')
-        //     } catch (e) {
-        //         console.log(e)
-        //     }
-        //     dispatch({ type: 'LOGOUT' })
-        // },
-        signUp: async (username, phoneNumber, password) => {
-            if (username !== null && phoneNumber !== null && password !== null) {
-                try {
-                    const body = JSON.stringify({
-                        username: username,
-                        phoneNumber: phoneNumber,
-                        password: password
-                    })
-                    console.log(body)
-                    await fetch('http://192.168.1.2:8082/api/user/register', {
-                        method: 'POST',
-                        headers: {
-                            'Accept': '*/*',
-                            'Content-Type': 'application/json',
-                        },
-                        body: body
-                    })
-                        .then(res => res.text())
-                        .then(data => {
-                            console.log(data)
-                            // fetch('http://192.168.1.2:8082/hello', {
-                            //     method: 'GET',
-                            //     headers: {
-                            //         'Authorization': `Token ${data}`
-                            //     }
-                            // })
-                            //     .then(res => res.text())
-                            //     .then(message => {
-                            //         console.log(message)
-                            //     })
-                            //     .catch(error => console.log(error))
-                        })
-                        .catch(error => console.log(error));
-                } catch (e) {
-                    console.log(e)
-                }
-                dispatch({ type: 'SIGN_UP', id: username });
-            }
-        },
-    }), [])
-
     React.useEffect(() => {
-        let userToken;
-        userToken = null;
-        try {
-            userToken = localStorage.getItem('userToken')
-        } catch (e) {
-            console.log(e)
-        }
-        dispatch({ type: 'RESTORE_TOKEN', token: userToken })
+        setTimeout(async () => {
+            let userToken;
+            userToken = null;
+            // console.log("state: ", state)
+            try {
+                userToken = await localStorage.getItem('userToken')
+            } catch (e) {
+                console.log(e)
+            }
+            dispatch({ type: 'RESTORE_TOKEN', token: userToken })
+        }, 1000)
 
-    }, [])
+        // return () => console.log("Clean up")
+    }, [state])
 
     return (
         <div>
@@ -182,8 +96,9 @@ function App() {
                 <Route path="/customers/profile/:id" element={<Profile />} />
                 <Route path="/transactions" element={<Transactions />} />
                 <Route path="/affiliates" element={<Affiliates />} />
-                <Route path="/signup" element={<Form />} />
+                <Route path="/signup" element={<Signup />} />
                 <Route path="/login" element={<Login />} />
+                {/* <Route path="/login" element={<Login />} /> */}
             </Routes>
         </div>
     );

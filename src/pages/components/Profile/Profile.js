@@ -1,7 +1,7 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Container, Row, Col, Table, Button, Modal, Form, Nav } from 'react-bootstrap';
+import { Container, Row, Col, Table, Button, Modal, Form } from 'react-bootstrap';
 import clsx from 'clsx';
 import styles from './style.module.css';
 
@@ -9,7 +9,6 @@ function Profile() {
 
     let params = useParams();
 
-    
     const [showModalEdit, setShowModalEdit] = React.useState(false);
     const [showModalDocument, setShowModalDocument] = React.useState(false);
 
@@ -20,18 +19,18 @@ function Profile() {
     const handleShowModalDocument = () => setShowModalDocument(true);
 
     const [customer, setCustomer] = React.useState({});
-    const [document, setDocument] = React.useState({});
+    // const [document, setDocument] = React.useState({});
     const [documents, setDocuments] = React.useState([]);
 
-
     React.useEffect(() => {
-
-        fetch('http://localhost:8082/api/customer/' + 1)
+        fetch('http://localhost:8082/api/customer/' + params.id)
             .then(res => res.json())
-            .then(customer => {
-                setCustomer(customer)
+            .then(data => {
+                setCustomer(data.data)
+            }).catch(e => {
+                console.log(e)
             });
-    }, [])
+    }, [params.id])
 
     const [lastName, setLastName] = React.useState('');
     const [firstName, setFirstName] = React.useState('');
@@ -41,7 +40,6 @@ function Profile() {
     const [address, setAddress] = React.useState('');
 
     const handleSubmitModalEdit = () => {
-
         fetch('http://localhost:8082/api/customer/' + params.id, {
             method: 'PUT',
             headers: {
@@ -65,12 +63,13 @@ function Profile() {
     }
 
     React.useEffect(() => {
-        fetch('http://localhost:8082/api/document/' + 1)
+        fetch('http://localhost:8082/api/document/' + params.id)
             .then(res => res.json())
-            .then(documents => {
-                setDocuments(documents)
+            .then(data => {
+                console.log(data.data)
+                setDocuments(data.data)
             })
-    }, [])
+    }, [params.id])
 
     const [docType, setDocType] = React.useState('');
     const [docNumber, setDocNumber] = React.useState('');
@@ -79,8 +78,7 @@ function Profile() {
     const [img, setImg] = React.useState('');
 
     const handleSubmitModalDocument = () => {
-
-        fetch('http://localhost:8082/api/document/' + params.id, {
+        fetch('http://localhost:8082/api/document', {
             method: 'POST',
             headers: {
                 'Accept': '*/*',
@@ -91,14 +89,16 @@ function Profile() {
                 docNumber: docNumber,
                 issuingAuthority: issuingAuthority,
                 expiryDate: expiryDate,
-                img: img
+                img: img,
+                userid: params.id,
             })
         })
-            .then(res => res.json())
-            .then((data) => {
-                setShowModalDocument(false);
-                setDocument(data);
-            })
+        .then(res => res.json())
+        .then((data) => {
+            documents.push(data.data)
+            setShowModalDocument(false);
+            setDocuments(documents);
+        })
     }
 
     const [status, setStatus] = React.useState("Pending");
@@ -107,9 +107,7 @@ function Profile() {
 
 
     const handleCheck = () => {
-
         if (documents.length > 0) {
-
             if (documents.length === 1) {
                 alert("Success")
                 riskLevel = clsx(styles.riskProfileAvailableLevel1)
@@ -139,9 +137,9 @@ function Profile() {
     }
 
     const checkKYC = () => {
-        
+
         const current = new Date();
-        const date = `${current.getDate()}/${current.getMonth()+1}/${current.getFullYear()}`;
+        const date = `${current.getDate()}/${current.getMonth() + 1}/${current.getFullYear()}`;
 
         return (
             <Row className={clsx(styles.bottomBlock, "mb-2", "p-3")}>
@@ -192,8 +190,8 @@ function Profile() {
                     <Col xl={3}>
                         <Row className={clsx(styles.topBlock, "text-center", "p-3")}>
                             <img className={styles.avatar}
-                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1DeyZNqRdLF9WiyJOo7YQW5HxbSp3F6tNQQ&usqp=CAU" 
-                            />
+                                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1DeyZNqRdLF9WiyJOo7YQW5HxbSp3F6tNQQ&usqp=CAU"
+                                alt="" />
                             <h4>{customer.id}</h4>
                             <h5>INDIVIDUAL PROFILE</h5>
                             <Row>
@@ -368,12 +366,6 @@ function Profile() {
                                 value={docType}
                                 onChange={e => setDocType(e.target.value)}
                             />
-                            {/* <Form.Select>
-                                <option>--- Select ---</option>
-                                <option value="1">Driver's License</option>
-                                <option value="2">ID Card</option>
-                                <option value="3">Passport</option>
-                            </Form.Select> */}
                         </Form.Group>
 
                         <Form.Group as={Row} className="mb-3">
@@ -438,7 +430,6 @@ function Profile() {
                                     <td>{document.img}</td>
                                 </tr>
                             ))}
-
                         </tbody>
                     </Table>
                 </Modal.Body>

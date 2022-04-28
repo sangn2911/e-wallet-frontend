@@ -14,8 +14,8 @@ function Affiliates() {
     React.useEffect(() => {
         fetch('http://localhost:8082/api/affiliates')
             .then(res => res.json())
-            .then(affiliates => {
-                setAffiliates(affiliates)
+            .then(data => {
+                setAffiliates(data.data)
             })
     }, [])
 
@@ -45,28 +45,27 @@ function Affiliates() {
         })
             .then(res => res.json())
             .then(data => {
-                affiliates.push(data);
+                affiliates.push(data.data);
                 setAffiliates(affiliates);
                 setShow(false)
             })
     }
 
     const handleDel = (id) => {
-        // console.log(id)
-        // fetch('http://localhost:8082/api/transactions', {
-        //     method: 'DELETE',
-        //     headers: {
-        //         'Accept': '*/*',
-        //         'Content-Type': 'application/json',
-        //     },
-        //     body: id
-        // })
-        //     .then(() => {
-        //         const pos = transactions.findIndex(transaction => transaction.id === id);
-        //         transactions.splice(pos, 1);
-        //         setTransactions([]);
-        //         setTransactions(transactions);
-        //     })
+
+        fetch('http://localhost:8082/api/affiliates', {
+            method: 'DELETE',
+            headers: {
+                'Accept': '*/*',
+                'Content-Type': 'application/json',
+            },
+            body: id
+        })
+            .then(() => {
+                const pos = affiliates.findIndex(transaction => transaction.id === id);
+                affiliates.splice(pos, 1);
+                setAffiliates(affiliates);
+            })
     }
 
     return (
@@ -94,8 +93,8 @@ function Affiliates() {
                             <td>{affiliate.district}</td>
                             <td>{affiliate.address}</td>
                             <td>Active</td>
-                            <td>{<a href={"/affiliates/info/" + affiliate.id}>Open</a>}</td>
-                            <td>{<button onClick={e => handleDel(affiliate.id)}>x</button>}</td>
+                            <td><a href={"/affiliates/info/" + affiliate.id}>Open</a></td>
+                            <td><Button style={{backgroundColor: 'red', border: 'none', color: 'white'}} onClick={e => handleDel(affiliate.id)}>Delete</Button></td>
                         </tr>
                     ))}
 
@@ -115,8 +114,8 @@ function Affiliates() {
                                     type="text"
                                     id="inputAffiliateName"
                                     placeholder="Affiliate Name"
-                                value={affiliateName}
-                                onChange={e => setAffiliateName(e.target.value)}
+                                    value={affiliateName}
+                                    onChange={e => setAffiliateName(e.target.value)}
                                 />
                             </Form.Group>
                             <Form.Group as={Col}>
@@ -125,8 +124,8 @@ function Affiliates() {
                                     type="text"
                                     id="inputDistrict"
                                     placeholder="District"
-                                value={district}
-                                onChange={e => setDistrict(e.target.value)}
+                                    value={district}
+                                    onChange={e => setDistrict(e.target.value)}
                                 />
                             </Form.Group>
                         </Form.Group>
@@ -137,8 +136,8 @@ function Affiliates() {
                                 type="text"
                                 id="inputAddress"
                                 placeholder="Address"
-                            value={address}
-                            onChange={e => setAddress(e.target.value)}
+                                value={address}
+                                onChange={e => setAddress(e.target.value)}
                             />
                         </Form.Group>
 
@@ -149,8 +148,8 @@ function Affiliates() {
                                     type="text"
                                     id="inputPhoneNumber"
                                     placeholder="Phone Number"
-                                value={phoneNumber}
-                                onChange={e => setPhoneNumber(e.target.value)}
+                                    value={phoneNumber}
+                                    onChange={e => setPhoneNumber(e.target.value)}
                                 />
                             </Form.Group>
                             <Form.Group as={Col}>
@@ -159,8 +158,8 @@ function Affiliates() {
                                     type="text"
                                     id="inputFax"
                                     placeholder="Fax"
-                                value={fax}
-                                onChange={e => setFax(e.target.value)}
+                                    value={fax}
+                                    onChange={e => setFax(e.target.value)}
                                 />
                             </Form.Group>
                             <Form.Group as={Col}>
@@ -169,8 +168,8 @@ function Affiliates() {
                                     type="email"
                                     id="inputEmail"
                                     placeholder="Email"
-                                value={email}
-                                onChange={e => setEmail(e.target.value)}
+                                    value={email}
+                                    onChange={e => setEmail(e.target.value)}
                                 />
                             </Form.Group>
                         </Form.Group>
@@ -181,7 +180,7 @@ function Affiliates() {
                         Close
                     </Button>
                     <Button variant="primary" onClick={handleCreate}>
-                        Create Transactions
+                        Create Affiliate
                     </Button>
                 </Modal.Footer>
             </Modal>

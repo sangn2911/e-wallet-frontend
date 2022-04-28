@@ -12,11 +12,18 @@ function Transactions() {
     const [transactions, setTransactions] = React.useState([]);
 
     React.useEffect(() => {
-        fetch('http://localhost:8082/api/transactions')
-            .then(res => res.json())
-            .then(transactions => {
-                setTransactions(transactions)
-            })
+        fetch('http://localhost:8082/api/transactions', {
+            method: 'GET',
+            headers: {
+                'Accept': '*/*',
+                'Content-Type': 'application/json',
+            },
+        }).then(res => res.json()
+        ).then(data => {
+            setTransactions(data.data)
+        }).catch(e => {
+            console.log(e)
+        })
     }, [])
 
     const [senderName, setSenderName] = React.useState('');
@@ -26,7 +33,6 @@ function Transactions() {
     const [message, setMessage] = React.useState('');
 
     const handleCreate = () => {
-
         fetch('http://localhost:8082/api/transactions', {
             method: 'POST',
             headers: {
@@ -43,14 +49,13 @@ function Transactions() {
         })
             .then(res => res.json())
             .then(data => {
-                transactions.push(data);
+                transactions.push(data.data)
                 setTransactions(transactions);
                 setShow(false)
             })
     }
 
     const handleDel = (id) => {
-        console.log(id)
         fetch('http://localhost:8082/api/transactions', {
             method: 'DELETE',
             headers: {
@@ -95,7 +100,12 @@ function Transactions() {
                             <td>{transaction.money}</td>
                             <td>{transaction.message}</td>
                             <td><a href="/transactions/#">Open</a></td>
-                            <td>{<button onClick={e => handleDel(transaction.id)}>x</button>}</td>
+                            <td>
+                                <Button
+                                    style={{ backgroundColor: 'red', border: 'none', color: 'white' }}
+                                    onClick={e => handleDel(transaction.id)}>Delete
+                                </Button>
+                            </td>
                         </tr>
                     ))}
                 </tbody>
