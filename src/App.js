@@ -147,16 +147,15 @@ function App() {
     }), [])
 
     React.useEffect(() => {
-        setTimeout(async () => {
-            let userToken;
-            userToken = null;
-            try {
-                userToken = await localStorage.getItem('userToken')
-            } catch (e) {
-                console.log(e)
-            }
-            dispatch({ type: 'RESTORE_TOKEN', token: userToken })
-        }, 1000)
+        let userToken;
+        userToken = null;
+        try {
+            userToken = localStorage.getItem('userToken')
+        } catch (e) {
+            console.log(e)
+        }
+        dispatch({ type: 'RESTORE_TOKEN', token: userToken })
+
     }, [])
 
     return (
