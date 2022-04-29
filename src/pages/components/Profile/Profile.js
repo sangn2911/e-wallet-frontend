@@ -58,7 +58,7 @@ function Profile() {
             .then(res => res.json())
             .then((data) => {
                 setShowModalEdit(false);
-                setCustomer(data);
+                setCustomer(data.data);
             })
     }
 
@@ -363,6 +363,7 @@ function Profile() {
                             <Form.Control
                                 type="text"
                                 id="inputDocType"
+                                placeholder='Document type'
                                 value={docType}
                                 onChange={e => setDocType(e.target.value)}
                             />
@@ -374,6 +375,7 @@ function Profile() {
                                 <Form.Control
                                     type="text"
                                     id="inputDocNumber"
+                                    placeholder='Document number'
                                     value={docNumber}
                                     onChange={e => setDocNumber(e.target.value)}
                                 />
@@ -383,6 +385,7 @@ function Profile() {
                                 <Form.Control
                                     type="text"
                                     id="inputIssuingAuthority"
+                                    placeholder='Authority'
                                     value={issuingAuthority}
                                     onChange={e => setIssuingAuthority(e.target.value)}
                                 />
@@ -395,6 +398,7 @@ function Profile() {
                                 <Form.Control
                                     type="text"
                                     id="inputExpiryDate"
+                                    placeholder='Expiry date'
                                     value={expiryDate}
                                     onChange={e => setExpiryDate(e.target.value)}
                                 />
@@ -403,6 +407,7 @@ function Profile() {
                                 <Form.Label>File</Form.Label>
                                 <Form.Control
                                     type="file"
+                                    placeholder='File path'
                                     value={img}
                                     onChange={e => setImg(e.target.value)}
                                 />

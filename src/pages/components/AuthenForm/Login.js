@@ -5,7 +5,7 @@ import FormSuccess from './FormSuccess'
 import './Form.css'
 
 const Login = () => {
-    const [isSuccess, setSuccess] = React.useState(true)
+    const [isSuccess, setSuccess] = React.useState(false)
 
     const [username, setUsername] = React.useState("")
     // const [email, setEmail] = React.useState("")
@@ -55,6 +55,7 @@ const Login = () => {
                 </div>
                {!isSuccess ? <div className="form-content-right">
                     <form className="form" method='post' onSubmit={formPreventDefault}>
+                    <h1>Welcome to our page!</h1>
                         <div className="form-inputs">
                             <label htmlFor="username" className="form-label">Username</label>
                             <input
